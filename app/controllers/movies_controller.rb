@@ -11,11 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @all_ratings = Movie.all_ratings
-    @selected_ratings = params[:ratings].nil? ? session[:ratings] || @all_ratings : params[:ratings].keys
+    session[:ratings] = session[:ratings] || Movie.all_ratings
     @sort = params[:sort] || session[:sort]
     session[:sort] = @sort
-    session[:ratings] = @selected_ratings
     @movies = Movie.where(rating: session[:ratings]).order(@sort)
   end
   
@@ -23,6 +21,8 @@ class MoviesController < ApplicationController
   end
   
   def filter_ratings
+    session[:ratings] = params[:ratings]
+    redirect_to index
   end
 
   def new
