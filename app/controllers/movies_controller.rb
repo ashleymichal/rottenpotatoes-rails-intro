@@ -18,6 +18,12 @@ class MoviesController < ApplicationController
     session[:ratings] = @selected_ratings
     @movies = Movie.where(rating: session[:ratings]).order(@sort)
   end
+  
+  def sort
+  end
+  
+  def filter_ratings
+  end
 
   def new
     # default: render 'new' template
