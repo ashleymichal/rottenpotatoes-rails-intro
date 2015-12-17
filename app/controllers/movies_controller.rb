@@ -11,21 +11,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @ratings = Movie.all_ratings
-    # debugger
-    # @selected_ratings = params[:ratings].nil? ? session[:ratings] || @all_ratings : params[:ratings].keys
-    @sort = params[:sort] || session[:sort]
-    session[:sort] = @sort
+    @ratings ||= Movie.all_ratings
     @movies = Movie.where(rating: @ratings.select { |rating, checked| checked == true }.keys).order(@sort)
   end
   
   def sort
+    @sort = params[:sort]
+    redirect_to movies_path
   end
   
   def ratings
-    ratings = params[:ratings].keys
-    # debugger
-    Movie.all_ratings= ratings
+    @ratings = params[:ratings].keys
     redirect_to movies_path
   end
 
